@@ -109,6 +109,7 @@ int Delete() {
     if (unstr.find(name) == unstr.end()) return 0;
     int value = unstr[name];
     unstr.erase(name);
+    unint.erase(value);
     string svalue = to_string(value);
     root[svalue.length() - 1]->Delete(svalue, value);
     return value;
