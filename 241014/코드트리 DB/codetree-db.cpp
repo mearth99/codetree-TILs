@@ -45,7 +45,7 @@ struct Trie {
         node->tot -= v;
         node->cnt--;
         node->is_end = false;
-        delete node;
+        node = NULL;
     }
     string Seek_K(int k) {
         string output = "";
@@ -110,7 +110,7 @@ int Delete() {
     int value = unstr[name];
     unstr.erase(name);
     string svalue = to_string(value);
-    root[svalue[0] - '0']->Delete(svalue, value);
+    root[svalue.length() - 1]->Delete(svalue, value);
     return value;
 }
 string Rank() {
