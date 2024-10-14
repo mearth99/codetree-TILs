@@ -69,6 +69,7 @@ struct Trie {
         Trie* node = this;
         int idx = 0;
         while (node) {
+            if (str.length() == idx) break;
             for (int i = 0; i < str[idx] - '0'; i++) {
                 if (node->next[i]) {
                     output += node->next[i]->tot;
@@ -76,6 +77,7 @@ struct Trie {
             }
             node = node->next[str[idx++] - '0'];
         }
+        if (node && node->is_end) output += node->tot;
         return output;
     }
 };
