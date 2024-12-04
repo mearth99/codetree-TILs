@@ -77,20 +77,6 @@ void BFSCAMP(int num) {
                 mincost = min(cost, mincost);
                 check.push_back({ y,x });
             }
-            else {
-                int ry = 100, rx = 100;
-                for (auto it : check) {
-                    if (it.first < ry) {
-                        ry = it.first;
-                        rx = it.second;
-                    }
-                    else if (it.first == ry && it.second < ry)
-                        ry = it.second;
-                }
-                arr[ry][rx] = -1;
-                man[num] = {ry,rx};
-                return;
-            }
         }
         q.pop();
         for (int i = 0; i < 4; i++) {
@@ -102,6 +88,18 @@ void BFSCAMP(int num) {
             }
         }
     }
+    int ry = 100, rx = 100;
+    for (auto it : check) {
+        if (it.first < ry) {
+            ry = it.first;
+            rx = it.second;
+        }
+        else if (it.first == ry && it.second < rx)
+            rx = it.second;
+    }
+    arr[ry][rx] = -1;
+    man[num] = { ry,rx };
+    return;
 }
 
 vector<int> one() {
