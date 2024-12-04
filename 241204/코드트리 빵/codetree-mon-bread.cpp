@@ -17,7 +17,6 @@ int ncnt = 1;
 
 int dy[4] = { -1,0,0,1 };
 int dx[4] = { 0,-1,1,0 };
-
 struct BFQ {
     int y, x, start_dir;
 };
@@ -65,15 +64,33 @@ void BFSCAMP(int num) {
     int sy = market[num].y;
     int sx = market[num].x;
     visit[sy][sx] = 1;
-    queue<pair<int, int>> q;
-    q.push({ sy,sx });
+    queue<BFQ> q;
+    q.push({ sy,sx,0 });
+    int mincost = 0x7fffffff;
+    vector<pair<int, int>> check;
     while (!q.empty()) {
-        int y = q.front().first;
-        int x = q.front().second;
+        int y = q.front().y;
+        int x = q.front().x;
+        int cost = q.front().start_dir; // start_dir을 cost로 활용
         if (arr[y][x] == 1) {
-            man[num] = { y,x };
-            arr[y][x] = -1;
-            return;
+            if (mincost >= cost) {
+                mincost = min(cost, mincost);
+                check.push_back({ y,x });
+            }
+            else {
+                int ry = 100, rx = 100;
+                for (auto it : check) {
+                    if (it.first < ry) {
+                        ry = it.first;
+                        rx = it.second;
+                    }
+                    else if (it.first == ry && it.second < ry)
+                        ry = it.second;
+                }
+                arr[ry][rx] = -1;
+                man[num] = {ry,rx};
+                return;
+            }
         }
         q.pop();
         for (int i = 0; i < 4; i++) {
@@ -81,7 +98,7 @@ void BFSCAMP(int num) {
             int nx = x + dx[i];
             if (ny >= 0 && ny < N && nx >= 0 && nx < N && arr[ny][nx] != -1 && !visit[ny][nx]) {
                 visit[ny][nx] = 1;
-                q.push({ ny,nx });
+                q.push({ ny,nx, cost+1 });
             }
         }
     }
